@@ -59,4 +59,25 @@ class AuthController extends Controller
     {
         return response()->json($request->user());
     } 
+
+    public function admin(LoginRequest $request)
+    {
+        $credentials = $request->validated();
+        if (!Auth::attempt($credentials)) {
+            return response([
+                'message' => ['As credenciais de email fornecidas estão incorretas.'],
+            ]);
+        }
+        $user = Auth::User();
+        
+        if (!$user->is_admin) {
+            return response()->json(['message' => 'Você não tem permissão para acessar esta rota'], 403);
+        }
+        $token = $user->createToken('auth-token')->plainTextToken;
+
+        return response()->json([
+            'user' => $user,
+            'token' => $token,
+        ]);
+    }
 }

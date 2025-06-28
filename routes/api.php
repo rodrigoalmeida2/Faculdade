@@ -12,6 +12,7 @@ use Illuminate\Container\Attributes\Auth;
 
 Route::post('/signup', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/admin', [AuthController::class, 'admin']);
 
 Route::middleware(['auth:sanctum', 'aluno'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
